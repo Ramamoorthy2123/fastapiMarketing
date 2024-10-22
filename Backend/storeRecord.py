@@ -7,8 +7,12 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 import io
+import logging
 
-# app = FastAPI()
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 router = APIRouter()
 
 # MongoDB connection setup
@@ -21,7 +25,8 @@ SCOPES = ['https://www.googleapis.com/auth/drive']
 SERVICE_ACCOUNT_FILE = 'Backend/marketing.json'
 
 credentials = service_account.Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+    SERVICE_ACCOUNT_FILE, scopes=SCOPES
+)
 
 drive_service = build('drive', 'v3', credentials=credentials)
 
@@ -96,8 +101,6 @@ async def submit_form(
         logger.error(f"Error submitting form: {str(e)}")
         raise HTTPException(status_code=500, detail="An error occurred while processing the request.")
 
-
-
 async def upload_to_drive(file: UploadFile, folder_name: str):
     try:
         # Create a folder in Google Drive if it doesn't exist
@@ -148,6 +151,5 @@ def create_or_get_folder(folder_name: str):
     folder = drive_service.files().create(body=file_metadata, fields='id').execute()
     return folder.get('id')
 
+# Uncomment this line if you haven't done so
 # app.include_router(router)
-
-
