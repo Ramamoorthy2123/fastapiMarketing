@@ -98,38 +98,31 @@ async def submit_form(
         print(f"Error submitting form: {str(e)}")  # Print error to console
         raise HTTPException(status_code=500, detail="An error occurred while processing the request.")
 
-async def upload_to_drive(file: UploadFile, folder_name: str):
+async def upload_to_drive(file: UploadFile, folder_id: str):
     try:
-        # Create a folder in Google Drive if it doesn't exist
-        folder_id = create_or_get_folder(folder_name)
-
         file_metadata = {
             'name': file.filename,
             'parents': [folder_id]
         }
 
-        # Use BytesIO to read the file content
         file_content = io.BytesIO(await file.read())
         media = MediaIoBaseUpload(file_content, mimetype=file.content_type)
 
-        # Upload the file
         uploaded_file = drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
         file_id = uploaded_file.get('id')
 
-        # Set file permissions to make it publicly accessible
+        # Set permissions to make it publicly accessible, if necessary
         drive_service.permissions().create(
             fileId=file_id,
-            body={
-                'role': 'reader',
-                'type': 'anyone'
-            }
+            body={'role': 'reader', 'type': 'anyone'}
         ).execute()
 
         return f"https://drive.google.com/uc?id={file_id}"
-    
+
     except Exception as e:
-        print(f"Error uploading file to Google Drive: {str(e)}")  # Print error to console
+        print(f"Error uploading file to Google Drive: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to upload file to Google Drive.")
+
 
 def create_or_get_folder(folder_name: str):
     # Check if folder exists
