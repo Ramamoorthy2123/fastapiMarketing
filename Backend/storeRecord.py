@@ -102,7 +102,7 @@ async def upload_to_drive(file: UploadFile, folder_id: str):
     try:
         file_metadata = {
             'name': file.filename,
-            'parents': [folder_id]
+            'parents': "1MTmA352jDO7UzilJr-vCPAkf6shFbhO9"
         }
 
         file_content = io.BytesIO(await file.read())
