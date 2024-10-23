@@ -7,10 +7,8 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 import io
-import os
-import json
 
-
+# app = FastAPI()
 router = APIRouter()
 
 # MongoDB connection setup
@@ -20,10 +18,13 @@ collection = db["Record"]
 
 # Google Drive setup
 SCOPES = ['https://www.googleapis.com/auth/drive']
+SERVICE_ACCOUNT_FILE = 'Backend/marketing.json'
 
-# Load credentials from the environment variable
-service_account_info = json.loads(os.environ['GOOGLE_APPLICATION_CREDENTIALS_JSON'])
-credentials = service_account.Credentials.from_service_account_info(service_account_info, scopes=SCOPES)
+credentials = service_account.Credentials.from_service_account_file(
+    SERVICE_ACCOUNT_FILE, scopes=SCOPES
+)
+
+
 drive_service = build('drive', 'v3', credentials=credentials)
 
 # Define a Pydantic model for data validation
@@ -146,5 +147,3 @@ def create_or_get_folder(folder_name: str):
     }
     folder = drive_service.files().create(body=file_metadata, fields='id').execute()
     return folder.get('id')
-
-
