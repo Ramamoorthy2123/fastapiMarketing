@@ -18,12 +18,11 @@ collection = db["Record"]
 
 # Google Drive setup
 SCOPES = ['https://www.googleapis.com/auth/drive']
-SERVICE_ACCOUNT_FILE = 'Backend/marketing.json'
-folder_id = "1MTmA352jDO7UzilJr-vCPAkf6shFbhO9"
+SERVICE_ACCOUNT_FILE = 'Backend/marketing-neuro-labs.json'
+
 credentials = service_account.Credentials.from_service_account_file(
     SERVICE_ACCOUNT_FILE, scopes=SCOPES
 )
-
 
 drive_service = build('drive', 'v3', credentials=credentials)
 
@@ -74,13 +73,13 @@ async def submit_form(
         # Save the image to Google Drive
         image_path = None
         if image_upload:
-            image_path = await upload_to_drive(image_upload, "images")
+            image_path = await upload_to_drive(image_upload)
             form_data["image_path"] = image_path
 
         # Save the visiting card to Google Drive
         visiting_card_path = None
         if visiting_card:
-            visiting_card_path = await upload_to_drive(visiting_card, "visiting_cards")
+            visiting_card_path = await upload_to_drive(visiting_card)
             form_data["visiting_card_path"] = visiting_card_path
 
         # Insert data into MongoDB
@@ -98,20 +97,23 @@ async def submit_form(
         print(f"Error submitting form: {str(e)}")  # Print error to console
         raise HTTPException(status_code=500, detail="An error occurred while processing the request.")
 
-async def upload_to_drive(file: UploadFile, folder_id: str):
+async def upload_to_drive(file: UploadFile):
+    folder_id = "1rGBmrnsbqdK7BK_A4k8hD9d9IxUUJhXN" 
     try:
         file_metadata = {
             'name': file.filename,
-            'parents': [folder_id]
+            'parents': [folder_id]  # Use the specified folder ID for uploads
         }
 
+        # Use BytesIO to read the file content
         file_content = io.BytesIO(await file.read())
         media = MediaIoBaseUpload(file_content, mimetype=file.content_type)
 
+        # Upload the file
         uploaded_file = drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
         file_id = uploaded_file.get('id')
 
-        # Set permissions to make it publicly accessible, if necessary
+        # Set file permissions to make it publicly accessible
         drive_service.permissions().create(
             fileId=file_id,
             body={'role': 'reader', 'type': 'anyone'}
@@ -120,23 +122,7 @@ async def upload_to_drive(file: UploadFile, folder_id: str):
         return f"https://drive.google.com/uc?id={file_id}"
 
     except Exception as e:
-        print(f"Error uploading file to Google Drive: {str(e)}")
+        print(f"Error uploading file to Google Drive: {str(e)}")  # Print error to console
         raise HTTPException(status_code=500, detail="Failed to upload file to Google Drive.")
 
-
-def create_or_get_folder(folder_name: str):
-    # Check if folder exists
-    query = f"mimeType='application/vnd.google-apps.folder' and name='{folder_name}'"
-    results = drive_service.files().list(q=query, fields="files(id)").execute()
-    items = results.get('files', [])
-    
-    if items:
-        return items[0]['id']
-    
-    # Create folder if it does not exist
-    file_metadata = {
-        'name': folder_name,
-        'mimeType': 'application/vnd.google-apps.folder'
-    }
-    folder = drive_service.files().create(body=file_metadata, fields='id').execute()
-    return folder.get('id')
+# app.include_router(router)  # Uncomment this line to include the router in your FastAPI app
