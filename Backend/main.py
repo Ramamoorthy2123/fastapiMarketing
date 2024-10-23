@@ -27,7 +27,7 @@ admin_collection = db["Admin_credentials"]
 
 # Add CORS middleware
 origins = [
-    "http://localhost:5174", 
+    "http://localhost:5173", 
     "http://marketing.neuro-labs.in" 
 ]
 
