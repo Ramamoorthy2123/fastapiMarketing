@@ -19,7 +19,7 @@ collection = db["Record"]
 # Google Drive setup
 SCOPES = ['https://www.googleapis.com/auth/drive']
 SERVICE_ACCOUNT_FILE = 'Backend/marketing.json'
-
+folder_id = "1MTmA352jDO7UzilJr-vCPAkf6shFbhO9"
 credentials = service_account.Credentials.from_service_account_file(
     SERVICE_ACCOUNT_FILE, scopes=SCOPES
 )
@@ -102,7 +102,7 @@ async def upload_to_drive(file: UploadFile, folder_id: str):
     try:
         file_metadata = {
             'name': file.filename,
-            'parents': "1MTmA352jDO7UzilJr-vCPAkf6shFbhO9"
+            'parents': [folder_id]
         }
 
         file_content = io.BytesIO(await file.read())
