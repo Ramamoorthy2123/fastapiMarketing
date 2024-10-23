@@ -17,7 +17,7 @@ db = client["Marketing_DB"]
 collection = db["Record"]
 
 # Google Drive setup
-SCOPES = ['https://www.googleapis.com/auth/drive']
+SCOPES = ['https://www.googleapis.com/auth/drive.file']
 SERVICE_ACCOUNT_FILE = 'Backend/marketing-neuro-labs.json'
 
 credentials = service_account.Credentials.from_service_account_file(
