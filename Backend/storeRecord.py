@@ -1,3 +1,5 @@
+import os
+import io
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from pydantic import BaseModel
 from typing import Optional
@@ -5,28 +7,26 @@ from pymongo import MongoClient
 from fastapi import APIRouter
 import firebase_admin
 from firebase_admin import credentials, storage
-import io
+from dotenv import load_dotenv
 
-# Initialize FastAPI
-app = FastAPI()
+# Load environment variables from .env file
+load_dotenv()
+
+
 router = APIRouter()
 
 # MongoDB connection setup
-client = MongoClient('mongodb+srv://nani:Nani@cluster0.p71g0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+client = MongoClient(os.getenv('MONGODB_URI'))
 db = client["Marketing_DB"]
 collection = db["Record"]
 
 # Firebase setup
-cred = credentials.Certificate('Backend/marketing-neuro-labs.json')
+cred = credentials.Certificate(os.getenv('FIREBASE_CREDENTIALS'))
 firebase_admin.initialize_app(cred, {
-    'storageBucket': 'neuro-labs-image.appspot.com' 
+    'storageBucket': os.getenv('FIREBASE_BUCKET') 
 })
 
 try:
-    cred = credentials.Certificate('Backend/marketing-neuro-labs.json')
-    firebase_admin.initialize_app(cred, {
-        'storageBucket': 'neuro-labs-image.appspot.com'  
-    })
     print("Firebase initialized successfully.")
 except Exception as e:
     print(f"Failed to initialize Firebase: {str(e)}")
@@ -115,5 +115,4 @@ async def submit_form(
     except Exception as e:
         print(f"Error submitting form: {str(e)}")  # Print error to console
         raise HTTPException(status_code=500, detail="An error occurred while processing the request.")
-
 
