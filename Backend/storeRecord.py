@@ -6,8 +6,9 @@ from fastapi import APIRouter
 import firebase_admin
 from firebase_admin import credentials, storage
 import io
-import os
 
+# Initialize FastAPI
+app = FastAPI()
 router = APIRouter()
 
 # MongoDB connection setup
@@ -16,10 +17,19 @@ db = client["Marketing_DB"]
 collection = db["Record"]
 
 # Firebase setup
-cred = credentials.Certificate(os.path.join('Backend', 'marketing-neuro-labs.json'))
+cred = credentials.Certificate('Backend/marketing-neuro-labs.json')
 firebase_admin.initialize_app(cred, {
-    'storageBucket': 'neuro-labs-image.appspot.com'  # Correctly formatted
+    'storageBucket': 'neuro-labs-image.appspot.com' 
 })
+
+try:
+    cred = credentials.Certificate('Backend/marketing-neuro-labs.json')
+    firebase_admin.initialize_app(cred, {
+        'storageBucket': 'neuro-labs-image.appspot.com'  
+    })
+    print("Firebase initialized successfully.")
+except Exception as e:
+    print(f"Failed to initialize Firebase: {str(e)}")
 
 # Define a Pydantic model for data validation
 class FormData(BaseModel):
