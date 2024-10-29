@@ -6,7 +6,8 @@ from fastapi import APIRouter
 import firebase_admin
 from firebase_admin import credentials, storage
 import io
-
+import os
+import json
 
 router = APIRouter()
 
@@ -16,7 +17,9 @@ db = client["Marketing_DB"]
 collection = db["Record"]
 
 # Firebase setup
-cred = credentials.Certificate('Backend/marketing-neuro-labs.json')
+# Load Firebase credentials from an environment variable
+cred = credentials.Certificate(os.path.join('Backend', 'marketing-neuro-labs.json'))
+cred = credentials.Certificate(firebase_credentials)
 firebase_admin.initialize_app(cred, {
     'storageBucket': 'neuro-labs-image.appspot.com'  # Correctly formatted
 })
@@ -105,4 +108,5 @@ async def submit_form(
     except Exception as e:
         print(f"Error submitting form: {str(e)}")  # Print error to console
         raise HTTPException(status_code=500, detail="An error occurred while processing the request.")
+
 
