@@ -7,7 +7,6 @@ import firebase_admin
 from firebase_admin import credentials, storage
 import io
 import os
-import json
 
 router = APIRouter()
 
@@ -17,9 +16,7 @@ db = client["Marketing_DB"]
 collection = db["Record"]
 
 # Firebase setup
-# Load Firebase credentials from an environment variable
 cred = credentials.Certificate(os.path.join('Backend', 'marketing-neuro-labs.json'))
-cred = credentials.Certificate(firebase_credentials)
 firebase_admin.initialize_app(cred, {
     'storageBucket': 'neuro-labs-image.appspot.com'  # Correctly formatted
 })
