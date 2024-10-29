@@ -3,12 +3,11 @@ from pydantic import BaseModel
 from typing import Optional
 from pymongo import MongoClient
 from fastapi import APIRouter
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
-from googleapiclient.http import MediaIoBaseUpload
+import firebase_admin
+from firebase_admin import credentials, storage
 import io
 
-# app = FastAPI()
+
 router = APIRouter()
 
 # MongoDB connection setup
@@ -16,15 +15,11 @@ client = MongoClient('mongodb+srv://nani:Nani@cluster0.p71g0.mongodb.net/?retryW
 db = client["Marketing_DB"]
 collection = db["Record"]
 
-# Google Drive setup
-SCOPES = ['https://www.googleapis.com/auth/drive.file']
-SERVICE_ACCOUNT_FILE = 'Backend/marketing-neuro-labs.json'
-
-credentials = service_account.Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_FILE, scopes=SCOPES
-)
-
-drive_service = build('drive', 'v3', credentials=credentials)
+# Firebase setup
+cred = credentials.Certificate('Backend/marketing-neuro-labs.json')
+firebase_admin.initialize_app(cred, {
+    'storageBucket': 'neuro-labs-image.appspot.com'  # Correctly formatted
+})
 
 # Define a Pydantic model for data validation
 class FormData(BaseModel):
@@ -38,6 +33,20 @@ class FormData(BaseModel):
     upload_time: str
     location: Optional[str] = ''
     serial_number: Optional[int] = None
+
+async def upload_to_firebase(file: UploadFile, folder: str):
+    bucket = storage.bucket()
+    blob = bucket.blob(f"{folder}/{file.filename}")  # Use folder path for upload
+
+    try:
+        file_content = io.BytesIO(await file.read())
+        blob.upload_from_file(file_content, content_type=file.content_type)
+        blob.make_public()  # Make the file publicly accessible
+        return blob.public_url
+
+    except Exception as e:
+        print(f"Error uploading file to Firebase Storage: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to upload file to Firebase Storage.")
 
 @router.post("/submit_form/")
 async def submit_form(
@@ -70,16 +79,16 @@ async def submit_form(
             "serial_number": serial_number,
         }
 
-        # Save the image to Google Drive
+        # Save the image to Firebase Storage in 'images' folder
         image_path = None
         if image_upload:
-            image_path = await upload_to_drive(image_upload)
+            image_path = await upload_to_firebase(image_upload, "images")  # Specify folder
             form_data["image_path"] = image_path
 
-        # Save the visiting card to Google Drive
+        # Save the visiting card to Firebase Storage in 'visiting_cards' folder
         visiting_card_path = None
         if visiting_card:
-            visiting_card_path = await upload_to_drive(visiting_card)
+            visiting_card_path = await upload_to_firebase(visiting_card, "visiting_cards")  # Specify folder
             form_data["visiting_card_path"] = visiting_card_path
 
         # Insert data into MongoDB
@@ -97,32 +106,3 @@ async def submit_form(
         print(f"Error submitting form: {str(e)}")  # Print error to console
         raise HTTPException(status_code=500, detail="An error occurred while processing the request.")
 
-async def upload_to_drive(file: UploadFile):
-    folder_id = "1rGBmrnsbqdK7BK_A4k8hD9d9IxUUJhXN" 
-    try:
-        file_metadata = {
-            'name': file.filename,
-            'parents': [folder_id]  # Use the specified folder ID for uploads
-        }
-
-        # Use BytesIO to read the file content
-        file_content = io.BytesIO(await file.read())
-        media = MediaIoBaseUpload(file_content, mimetype=file.content_type)
-
-        # Upload the file
-        uploaded_file = drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-        file_id = uploaded_file.get('id')
-
-        # Set file permissions to make it publicly accessible
-        drive_service.permissions().create(
-            fileId=file_id,
-            body={'role': 'reader', 'type': 'anyone'}
-        ).execute()
-
-        return f"https://drive.google.com/uc?id={file_id}"
-
-    except Exception as e:
-        print(f"Error uploading file to Google Drive: {str(e)}")  # Print error to console
-        raise HTTPException(status_code=500, detail="Failed to upload file to Google Drive.")
-
-# app.include_router(router)  # Uncomment this line to include the router in your FastAPI app
