@@ -16,7 +16,8 @@ load_dotenv()
 router = APIRouter()
 
 # MongoDB connection setup
-client = MongoClient(os.getenv('MONGODB_URI'))
+client = MongoClient(os.getenv('MONGODB_URI=mongodb+srv://nani:Nani@cluster0.p71g0.mongodb.net/Marketing_DB?retryWrites=true&w=majority
+'))
 db = client["Marketing_DB"]
 collection = db["Record"]
 
