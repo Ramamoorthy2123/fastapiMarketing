@@ -8,7 +8,7 @@ from firebase_admin import credentials, storage
 import io
 
 # Initialize FastAPI
-app = FastAPI()
+
 router = APIRouter()
 
 # MongoDB connection setup
