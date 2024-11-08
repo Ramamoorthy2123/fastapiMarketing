@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "marketing-neuro-labs-439510",
+  "private_key_id": "67fe861dbc58bff88b53ca022705f5914d9cca66",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCYFMdPQbyMrG/J\nv0NX/BzGI7Ucu+Vrkx6nvuHRwhlMgEd1t0KCFRBTy6gsF3rzmzzvt5GoXQ8KnCnk\nL4jl4vgBo/W356mRKXw9cPvLtUIh5jtvaKGglEb2L52FJQWjWvuz4Ni9qOaOHSel\nHysjN+qkpaM/S/fPV4zDqc6BHAbCixwhm4TcIRqsQDpcA8PF8vv0R2iMCvFBnsRL\nEo/MWzjghSI84zKD1/Efmt4hr69OBL5QMdjBMz0nNUz252OrFF+FgCzRrk46uLaW\nqY3kl8sCVmogN1X6xVDhcYRdSSU8uLNOOCGNyonMyq3D5IytuS5jctO2CnHlFElT\nm9q/41JJAgMBAAECggEABppkWvsaMitsgSB2TpQqNaooO3KnD+gn3RWrHV3llk49\njA1kbFx4xIKjryJn2rrjRu87+kjsFcRZB0jPE1gq93tEeHMtCBn6hHpq3Fnm4Kzr\n6LbsyZmWiSrhFn5Yg9K3+gPptTZnqET4yzESwOk1HWf5sg5c2JpPCNHPHwj1/C1X\n4qL7r/ovSJ4KTGj+zM5nxR6pELWBa+xDBZdMzbCmxBnA+/DoUjV6FFUtXrHMUKyZ\nFW5E4ea+1ZyyCwqW4Gv4gXvmQ/0tMxWTsVNNaq0VKQl6Zfa39QfPhwk9wDxy5F0a\nNUemj7EVavSIZp9DPCsJjhZ9JSDTSNlLQiErNOR9QQKBgQDTq/aphHEs+LRLn1Ex\nUFeEI39DTlQ+A9zh1ftC2qfZhJF9R3ACYGOqVXeYL/H/H7XD6dL/p4jol8e8Sgwe\nm1LfV1sCsFPuePIuBdzYo18WgAwZAA9lnQ+qpX+XSSAhF1Y7buWy3ePknKBE9hyM\n//oKzY2GC4dpYQLph5QbT7+dkQKBgQC37hN8kPZk1b/w2xRv1xFRQznBtGsSTCKx\nkuLQhW4Oou8A4xtEXtmwHNbIitlaIVxzLW9UKMSrWIuwoxVOPLU6DiuqKa4dsq5l\nweB6mTV7JPuDD/OV4divpkLqSrT+IpifJ0NVD5FB0QfJAloeDHT8h1y2jn1rDwOl\nCH6QPrrtOQKBgDiCOB+ZU/2Fh9yIc8yOfk6wi1EUoDjOHzHLRoDajuTrF0wyvhxk\nTzcyCfN/GUPa21OqIMJPn6U4oAIMYp/pJ36oe4uEN2P6tezDc+oB82i2VoR2F6Yw\n//W2qRFiXEl5SXQkbv4JbsWhasf+TDD4RXCM37NhcI0ZcQWXRFrmN2mBAoGACz4s\nRsL9rLA8KVba6vM0hckcMLD8koPA4yXdY22kipR/E4jOU+GQYOmCX4PNQWskoY23\nbmeHjgm9kDCHzt57HW9cT+x4Tixr6KBvPk87K6nZDevdsd26RxJcqMGkSpyGw8O8\no+htsp46YZkZNRkB1aXYjvgqxm6GhIH+aobLGlECgYB/NMucuwXD6crdVLbmr07M\nBe0QYSHwAeHxSDi3j+yBxQYooClqqSRX6Irrfh0do2R8SmF1uc1WgsJuxVDVHFbO\njy2ozWa/7RIct+yj/Y9mi5xPPgWWeXKWe6UlH8HC+xfmrIJ58q4dK3nYKy1b5/AZ\nUHYzgl2FEnIKixq4avNb9g==\n-----END PRIVATE KEY-----\n",
+  "client_email": "neurolabsbpo@marketing-neuro-labs-439510.iam.gserviceaccount.com",
+  "client_id": "116818738506649965075",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/neurolabsbpo%40marketing-neuro-labs-439510.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
