@@ -4,11 +4,12 @@ import base64
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from pydantic import BaseModel
 from typing import Optional
-from motor.motor_asyncio import AsyncIOMotorClient 
+from motor.motor_asyncio import AsyncIOMotorClient
 from fastapi import APIRouter
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaIoBaseUpload 
+from googleapiclient.http import MediaIoBaseUpload
+from google.auth.exceptions import GoogleAuthError
 
 router = APIRouter()
 
@@ -46,9 +47,14 @@ def authenticate_google_drive():
         drive_service = build(API_NAME, API_VERSION, credentials=creds)
         return drive_service
 
+    except GoogleAuthError as e:
+        # This will catch authentication-related errors, including JWT signature issues
+        print(f"Google authentication error: {str(e)}")
+        raise HTTPException(status_code=401, detail=f"Authentication failed: {str(e)}")
     except Exception as e:
+        # This will catch other exceptions (e.g., file handling, missing key, etc.)
         print(f"Error authenticating with Google Drive: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to authenticate with Google Drive.")
+        raise HTTPException(status_code=500, detail=f"Failed to authenticate with Google Drive: {str(e)}")
 
 # Upload file to Google Drive in a specific folder (async)
 async def upload_file_to_drive(file: UploadFile, folder_id: str):
@@ -67,9 +73,13 @@ async def upload_file_to_drive(file: UploadFile, folder_id: str):
         # Upload file to Google Drive
         uploaded_file = drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
         return f'https://drive.google.com/file/d/{uploaded_file["id"]}/view'
+    
+    except GoogleAuthError as e:
+        print(f"Google authentication error while uploading file: {str(e)}")
+        raise HTTPException(status_code=401, detail=f"Authentication failed during file upload: {str(e)}")
     except Exception as e:
         print(f"Error uploading file to Google Drive: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to upload file to Google Drive.")
+        raise HTTPException(status_code=500, detail=f"Failed to upload file to Google Drive: {str(e)}")
 
 # Define a Pydantic model for data validation
 class FormData(BaseModel):
@@ -147,4 +157,4 @@ async def submit_form(
 
     except Exception as e:
         print(f"Error submitting form: {str(e)}")
-        raise HTTPException(status_code=500, detail="An error occurred while processing the request.")
+        raise HTTPException(status_code=500, detail=f"An error occurred while processing the request: {str(e)}")
