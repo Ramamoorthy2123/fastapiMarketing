@@ -87,6 +87,7 @@ class FormData(BaseModel):
     company_name: str
     address: str
     contact_person: str
+    contact_number: str
     website_url: Optional[str] = ''
     purpose: str
     status: str
@@ -101,6 +102,7 @@ async def submit_form(
     company_name: str = Form(...),
     address: str = Form(...),
     contact_person: str = Form(...),
+    contact_number: str = Form(...),
     website_url: Optional[str] = Form(''),
     purpose: str = Form(...),
     status: str = Form(...),
@@ -120,6 +122,7 @@ async def submit_form(
             "company_name": company_name,
             "address": address,
             "contact_person": contact_person,
+            "contact_number": contact_number,
             "website_url": website_url,
             "purpose": purpose,
             "status": status,
@@ -152,7 +155,8 @@ async def submit_form(
             "data_id": str(result.inserted_id),
             "serial_number": serial_number,
             "image_path": image_path,
-            "visiting_card_path": visiting_card_path
+            "visiting_card_path": visiting_card_path,
+            "contact_number":contact_number
         }
 
     except Exception as e:
