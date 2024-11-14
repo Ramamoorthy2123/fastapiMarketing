@@ -28,6 +28,7 @@ class RecordResponse(BaseModel):
     address: str
     website_url: str
     contact_person: str
+    contact_number: str
     company_name: str
     status: str
     purpose: str
@@ -52,7 +53,7 @@ ensure_directories_exist()
 async def get_records():
     try:
         # Asynchronously fetch records and sort by serial_number in ascending order
-        records = await collection.find().sort("serial_number", 1).to_list(length=100)  # Sort by serial_number (ascending)
+        records = await collection.find().sort("serial_number", -1).to_list(length=100)  # Sort by serial_number (ascending)
         response_data = []
 
         for record in records:
@@ -85,9 +86,10 @@ async def get_record(serial_number: int):
                 "serial_number": record["serial_number"],
                 "user_name": record["user_name"],
                 "company_name": record["company_name"],
-                "address": record["address"],  # Ensure this field is included
-                "contact_person": record["contact_person"],  # Ensure this field is included
-                "website_url": record["website_url"],  # Ensure this field is included
+                "address": record["address"], 
+                "contact_person": record["contact_person"], 
+                "contact_number": record["contact_number"], 
+                "website_url": record["website_url"], 
                 "status": record["status"],
                 "purpose": record["purpose"],
                 "upload_time": record["upload_time"],  # Assuming this field exists
