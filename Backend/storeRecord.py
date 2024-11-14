@@ -132,8 +132,8 @@ async def submit_form(
         }
 
         # Define the folder IDs for image and visiting card directories in Google Drive
-        images_folder_id = '1sB6sdwStY_lSIYFzrep8sa8NDX62AsWQ'
-        visiting_card_folder_id = '1_1FYzjXPemXA9A-bEMmd8miQjtJ8_y6-'
+        images_folder_id = '1L6gIpKC7HzbnRBwBePhgghdgmj79y0Ab'
+        visiting_card_folder_id = '1xo-qtqxk2k_jlVGmkRDLUfwHg0G3mDE2'
 
         # Upload the image
         image_path = None
