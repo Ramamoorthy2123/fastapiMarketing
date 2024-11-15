@@ -15,7 +15,7 @@ router = APIRouter()
 
 # MongoDB connection setup using Motor (async)
 
-uri = 'mongodb+srv://neurolabsinnovationsdocs:Neurolabs%40123@neurolabs.elyma.mongodb.net/?retryWrites=true&w=majority&appName=NeuroLabs&w=majority&ssl=false''
+uri = 'mongodb+srv://neurolabsinnovationsdocs:Neurolabs%40123@neurolabs.elyma.mongodb.net/?retryWrites=true&w=majority&appName=NeuroLabs&w=majority&ssl=false'
 client = AsyncIOMotorClient(uri, serverSelectionTimeoutMS=100000, socketTimeoutMS=100000)
 
 
