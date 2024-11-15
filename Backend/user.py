@@ -6,7 +6,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 router = APIRouter()
 
 # MongoDB async connection setup using Motor
-client = AsyncIOMotorClient('mongodb+srv://nani:Nani@cluster0.p71g0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+client = AsyncIOMotorClient('mongodb+srv://neurolabsinnovationsdocs:Neurolabs%40123@cluster0.elyma.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = client["Marketing_DB"]
 collection = db["User_credentials"]
 
