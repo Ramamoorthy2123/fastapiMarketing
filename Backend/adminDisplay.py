@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 # MongoDB configuration using Motor (Async)
-client = AsyncIOMotorClient('mongodb+srv://nani:Nani@cluster0.p71g0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', tls=True, tlsCAFile=certifi.where())
+client = AsyncIOMotorClient('mongodb+srv://neurolabsinnovationsdocs:Neurolabs%40123@cluster0.elyma.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', tls=True, tlsCAFile=certifi.where())
 db = client["Marketing_DB"]
 collection = db["Record"]
 
