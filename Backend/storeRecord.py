@@ -14,7 +14,8 @@ from google.auth.exceptions import GoogleAuthError
 router = APIRouter()
 
 # MongoDB connection setup using Motor (async)
-client = AsyncIOMotorClient('mongodb+srv://neurolabsinnovationsdocs:Neurolabs@123@neurolabs.elyma.mongodb.net/?retryWrites=true&w=majority&appName=NeuroLabs')
+client = AsyncIOMotorClient('mongodb+srv://neurolabsinnovationsdocs:Neurolabs%40123@neurolabs.elyma.mongodb.net/?retryWrites=true&w=majority&appName=NeuroLabs')
+
 
 db = client["neurolabs"]
 collection = db["Record"]
