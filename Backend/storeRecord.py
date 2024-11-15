@@ -13,15 +13,10 @@ from google.auth.exceptions import GoogleAuthError
 
 router = APIRouter()
 
-# MongoDB connection setup using Motor (async)
-
-uri = 'mongodb+srv://neurolabsinnovationsdocs:Neurolabs%40123@neurolabs.elyma.mongodb.net/?retryWrites=true&w=majority&appName=NeuroLabs&w=majority&ssl=false'
-client = AsyncIOMotorClient(uri, serverSelectionTimeoutMS=500000, socketTimeoutMS=500000)
-
-
-
-db = client["neurolabs"]
+client = AsyncIOMotorClient('mongodb+srv://neurolabsinnovationsdocs:Neurolabs%40123@cluster0.elyma.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = client["Marketing_DB"]
 collection = db["Record"]
+
 
 # Google Drive setup using Service Account
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
