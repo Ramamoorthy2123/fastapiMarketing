@@ -21,7 +21,7 @@ app.include_router(user.router)
 app.include_router(storeRecord.router)
 app.include_router(adminDisplay.router)
 
-client = MongoClient('mongodb+srv://nani:Nani@cluster0.p71g0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+client = MongoClient('mongodb+srv://neurolabsinnovationsdocs:Neurolabs%40123@cluster0.elyma.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = client["Marketing_DB"]
 admin_collection = db["Admin_credentials"]
 
